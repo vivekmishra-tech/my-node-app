@@ -2,7 +2,7 @@ name: CI / Build & Push to GHCR
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, staging, development ]
   push:
     branches: [ main ]
 
@@ -42,7 +42,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -54,10 +53,10 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
